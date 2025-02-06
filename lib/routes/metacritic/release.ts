@@ -1,9 +1,8 @@
-// @ts-nocheck
 import got from '@/utils/got';
 import { toTitleCase } from '@/utils/common-utils';
 import { load } from 'cheerio';
 
-export default async (ctx) => {
+const handler = async (ctx) => {
     let type = 'new-releases';
     let title = 'New Releases';
 
@@ -42,7 +41,7 @@ export default async (ctx) => {
         };
     });
 
-    ctx.set('data', {
+    return {
         title: toTitleCase(`Metacritic ${ctx.req.param('platform')} games ${title}`),
         link: url,
         item: result.map((item) => ({
@@ -50,5 +49,6 @@ export default async (ctx) => {
             description: `Release Date: ${item.date} <br> Metacritic Score: ${item.metascore} <br> User Score: ${item.userscore} <br>`,
             link: item.url,
         })),
-    });
+    };
 };
+export default handler;

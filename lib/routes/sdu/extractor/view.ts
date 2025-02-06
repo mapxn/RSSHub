@@ -1,11 +1,10 @@
-// @ts-nocheck
 import cache from '@/utils/cache';
 import got from '@/utils/got';
 import { load } from 'cheerio';
 import { parseDate } from '@/utils/parse-date';
 import timezone from '@/utils/timezone';
 
-module.exports = (link) =>
+const view = (link) =>
     cache.tryGet(link, async () => {
         let content, author, exactDate;
         try {
@@ -21,3 +20,4 @@ module.exports = (link) =>
             return { description: content, author, exactDate };
         }
     });
+export default view;

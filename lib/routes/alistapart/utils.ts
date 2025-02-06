@@ -1,9 +1,8 @@
-// @ts-nocheck
-import got from '@/utils/got';
+import ofetch from '@/utils/ofetch';
 import { parseDate } from '@/utils/parse-date';
 import timezone from '@/utils/timezone';
 
-const getData = (url) => got.get(url).json();
+const getData = (url) => ofetch(url);
 
 const getList = (data) =>
     data.map((value) => {
@@ -20,4 +19,4 @@ const getList = (data) =>
         };
     });
 
-module.exports = { getData, getList };
+export { getData, getList };

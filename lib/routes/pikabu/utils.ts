@@ -1,9 +1,8 @@
-// @ts-nocheck
 import { getCurrentPath } from '@/utils/helpers';
 const __dirname = getCurrentPath(import.meta.url);
 
 import { art } from '@/utils/render';
-import * as path from 'node:path';
+import path from 'node:path';
 
 const baseUrl = 'https://pikabu.ru';
 
@@ -40,8 +39,4 @@ const fixVideo = (element) => {
     element.replaceWith(videoHtml);
 };
 
-module.exports = {
-    baseUrl,
-    fixImage,
-    fixVideo,
-};
+export { baseUrl, fixImage, fixVideo };

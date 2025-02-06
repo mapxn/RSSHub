@@ -1,11 +1,10 @@
-// @ts-nocheck
 import cache from '@/utils/cache';
 import got from '@/utils/got';
 import { load } from 'cheerio';
 import { parseDate } from '@/utils/parse-date';
 import timezone from '@/utils/timezone';
 
-module.exports = (link) =>
+const jwc = (link) =>
     cache.tryGet(link, async () => {
         let content, exactDate;
         try {
@@ -24,3 +23,4 @@ module.exports = (link) =>
             return { description: content, exactDate };
         }
     });
+export default jwc;

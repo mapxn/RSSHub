@@ -1,25 +1,25 @@
-// @ts-nocheck
 import { config } from '@/config';
-import got from '@/utils/got';
+import ConfigNotFoundError from '@/errors/types/config-not-found';
+import ofetch from '@/utils/ofetch';
 
 // Token used to retrieve public information.
 async function getPublicToken() {
     if (!config.spotify || !config.spotify.clientId || !config.spotify.clientSecret) {
-        throw new Error('Spotify public RSS is disabled due to the lack of <a href="https://docs.rsshub.app/install/#pei-zhi-bu-fen-rss-mo-kuai-pei-zhi">relevant config</a>');
+        throw new ConfigNotFoundError('Spotify public RSS is disabled due to the lack of <a href="https://docs.rsshub.app/deploy/config#route-specific-configurations">relevant config</a>');
     }
 
     const { clientId, clientSecret } = config.spotify;
 
-    const tokenResponse = await got
-        .post('https://accounts.spotify.com/api/token', {
-            headers: {
-                Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
-            },
-            form: {
-                grant_type: 'client_credentials',
-            },
-        })
-        .json();
+    const tokenResponse = await ofetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+            Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            grant_type: 'client_credentials',
+        }).toString(),
+    });
     return tokenResponse.access_token;
 }
 
@@ -27,22 +27,22 @@ async function getPublicToken() {
 // Note that we don't use PKCE since the client secret shall be safe on the server.
 async function getPrivateToken() {
     if (!config.spotify || !config.spotify.clientId || !config.spotify.clientSecret || !config.spotify.refreshToken) {
-        throw new Error('Spotify private RSS is disabled due to the lack of <a href="https://docs.rsshub.app/install/#pei-zhi-bu-fen-rss-mo-kuai-pei-zhi">relevant config</a>');
+        throw new ConfigNotFoundError('Spotify private RSS is disabled due to the lack of <a href="https://docs.rsshub.app/deploy/config#route-specific-configurations">relevant config</a>');
     }
 
     const { clientId, clientSecret, refreshToken } = config.spotify;
 
-    const tokenResponse = await got
-        .post('https://accounts.spotify.com/api/token', {
-            headers: {
-                Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
-            },
-            form: {
-                grant_type: 'refresh_token',
-                refresh_token: refreshToken,
-            },
-        })
-        .json();
+    const tokenResponse = await ofetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+            Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            grant_type: 'refresh_token',
+            refresh_token: refreshToken,
+        }).toString(),
+    });
     return tokenResponse.access_token;
 }
 
@@ -55,9 +55,4 @@ const parseTrack = (x) => ({
 
 const parseArtist = (x) => ({ title: x.name, description: `${x.name}, with ${x.followers.total} followers`, link: x.external_urls.spotify });
 
-module.exports = {
-    getPublicToken,
-    getPrivateToken,
-    parseTrack,
-    parseArtist,
-};
+export default { getPublicToken, getPrivateToken, parseTrack, parseArtist };

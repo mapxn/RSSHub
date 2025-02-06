@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { getCurrentPath } from '@/utils/helpers';
 const __dirname = getCurrentPath(import.meta.url);
 
@@ -6,8 +5,8 @@ import got from '@/utils/got';
 import { load } from 'cheerio';
 import { parseDate } from '@/utils/parse-date';
 import { art } from '@/utils/render';
-import * as path from 'node:path';
-const CryptoJS = require('crypto-js');
+import path from 'node:path';
+import CryptoJS from 'crypto-js';
 
 const domain = 'huxiu.com';
 const rootUrl = `https://www.${domain}`;
@@ -189,7 +188,7 @@ const fetchItem = async (item) => {
     const { data: detailResponse } = await got(item.link);
 
     const state = parseInitialState(detailResponse);
-    const data = state.briefStoreModule?.brief_detail.brief ?? state.articleDetail?.articleDetail ?? undefined;
+    const data = state?.briefStoreModule?.brief_detail.brief ?? state?.articleDetail?.articleDetail ?? undefined;
 
     if (!data) {
         return item;
@@ -377,7 +376,7 @@ const processItems = async (items, limit, tryGet) => {
                 }),
                 author: item.user_info?.username ?? item.brief_column?.name ?? item.author_info?.username ?? item.author,
                 guid,
-                pubDate: item.publish_time ?? item.dateline ? parseDate(item.publish_time ?? item.dateline, 'X') : undefined,
+                pubDate: (item.publish_time ?? item.dateline) ? parseDate(item.publish_time ?? item.dateline, 'X') : undefined,
                 upvotes: Number.parseInt(upvotes, 10),
                 downvotes: Number.parseInt(downvotes, 10),
                 comments: Number.parseInt(comments, 10),
@@ -444,17 +443,4 @@ const processVideoInfo = (info) => {
     };
 };
 
-module.exports = {
-    rootUrl,
-    apiArticleRootUrl,
-    apiBriefRootUrl,
-    apiMemberRootUrl,
-    apiMomentRootUrl,
-    apiSearchRootUrl,
-
-    fetchBriefColumnData,
-    fetchClubData,
-    fetchData,
-    generateSignature,
-    processItems,
-};
+export { rootUrl, apiArticleRootUrl, apiBriefRootUrl, apiMemberRootUrl, apiMomentRootUrl, apiSearchRootUrl, fetchBriefColumnData, fetchClubData, fetchData, generateSignature, processItems };

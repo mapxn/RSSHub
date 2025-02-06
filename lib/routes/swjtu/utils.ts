@@ -1,11 +1,10 @@
-// @ts-nocheck
 import { getCurrentPath } from '@/utils/helpers';
 const __dirname = getCurrentPath(import.meta.url);
 
 import got from '@/utils/got';
 import { art } from '@/utils/render';
 import { parseDate } from '@/utils/parse-date';
-import * as path from 'node:path';
+import path from 'node:path';
 
 const renderDetail = (jobs) => art(path.join(__dirname, 'templates/job_detail.art'), { jobs });
 const renderDesc = (intro) =>
@@ -30,8 +29,4 @@ const descpPage = (link, cache) =>
         };
     });
 
-module.exports = {
-    descpPage,
-    renderDetail,
-    renderDesc,
-};
+export default { descpPage, renderDetail, renderDesc };

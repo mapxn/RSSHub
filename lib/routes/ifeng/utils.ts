@@ -1,9 +1,8 @@
-// @ts-nocheck
 import { getCurrentPath } from '@/utils/helpers';
 const __dirname = getCurrentPath(import.meta.url);
 
 import { art } from '@/utils/render';
-import * as path from 'node:path';
+import path from 'node:path';
 
 const extractDoc = (data) =>
     data
@@ -24,7 +23,4 @@ const renderVideo = (videoInfo) =>
         videoInfo,
     });
 
-module.exports = {
-    extractDoc,
-    renderVideo,
-};
+export { extractDoc, renderVideo };
