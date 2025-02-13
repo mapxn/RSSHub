@@ -1,4 +1,3 @@
-// @ts-nocheck
 import cache from '@/utils/cache';
 import md5 from '@/utils/md5';
 import got from '@/utils/got';
@@ -43,7 +42,7 @@ const decrypt_douyin_detail_xyz = (nonce) => {
     return md5(str);
 };
 
-const flatten = (arr) => arr.reduce((acc, val) => [...acc, ...(Array.isArray(val) ? flatten(val) : val)], []);
+const flatten = (arr) => arr.reduce((acc, val) => (Array.isArray(val) ? [...acc, ...flatten(val)] : [...acc, val]), []);
 
 function shouldUpdateCookie(forcedUpdate = false) {
     if (forcedUpdate) {
@@ -104,11 +103,4 @@ async function getCookie() {
     return token;
 }
 
-module.exports = {
-    getCookie,
-    random_nonce,
-    decrypt_wechat_detail_xyz,
-    decrypt_douyin_account_xyz,
-    decrypt_douyin_detail_xyz,
-    flatten,
-};
+export default { getCookie, random_nonce, decrypt_wechat_detail_xyz, decrypt_douyin_account_xyz, decrypt_douyin_detail_xyz, flatten };

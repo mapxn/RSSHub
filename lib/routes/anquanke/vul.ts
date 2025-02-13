@@ -1,9 +1,8 @@
-// @ts-nocheck
 import got from '@/utils/got';
 import { load } from 'cheerio';
 import { parseDate } from '@/utils/parse-date';
 
-export default async (ctx) => {
+const handler = async () => {
     const url = 'https://www.anquanke.com';
 
     const response = await got(`${url}/vul`);
@@ -27,9 +26,11 @@ export default async (ctx) => {
         };
     });
 
-    ctx.set('data', {
+    return {
         title: '安全客-漏洞cve报告',
         link: 'https://www.anquanke.com/vul',
         item: items,
-    });
+    };
 };
+
+export default handler;

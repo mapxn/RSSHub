@@ -1,14 +1,14 @@
-// @ts-nocheck
+import { Route } from '@/types';
 import { getCurrentPath } from '@/utils/helpers';
 const __dirname = getCurrentPath(import.meta.url);
 
 import cache from '@/utils/cache';
 import got from '@/utils/got';
-const dayjs = require('dayjs');
+import dayjs from 'dayjs';
 import { art } from '@/utils/render';
-import * as path from 'node:path';
+import path from 'node:path';
 
-const host = 'http://data.guduodata.com';
+const host = 'http://d.guduodata.com';
 
 const types = {
     collect: {
@@ -31,7 +31,31 @@ const types = {
     },
 };
 
-export default async (ctx) => {
+export const route: Route = {
+    path: '/daily',
+    categories: ['other'],
+    example: '/guduodata/daily',
+    parameters: {},
+    features: {
+        requireConfig: false,
+        requirePuppeteer: false,
+        antiCrawler: false,
+        supportBT: false,
+        supportPodcast: false,
+        supportScihub: false,
+    },
+    radar: [
+        {
+            source: ['guduodata.com/'],
+        },
+    ],
+    name: '日榜',
+    maintainers: ['Gem1ni'],
+    handler,
+    url: 'guduodata.com/',
+};
+
+async function handler() {
     const now = dayjs().valueOf();
     // yestoday
     const yestoday = dayjs().subtract(1, 'day').format('YYYY-MM-DD');
@@ -41,10 +65,10 @@ export default async (ctx) => {
             type: key,
             name: `[${yestoday}] ${types[key].name} - ${types[key].categories[category]}`,
             category: category.toUpperCase(),
-            url: `${host}/show/datalist?type=DAILY&category=${category.toUpperCase()}&date=${yestoday}`,
+            url: `${host}/m/v3/billboard/list?type=DAILY&category=${category.toUpperCase()}&date=${yestoday}`,
         }))
     );
-    ctx.set('data', {
+    return {
         title: `骨朵数据 - 日榜`,
         link: host,
         description: yestoday,
@@ -52,7 +76,7 @@ export default async (ctx) => {
             items.map((item) =>
                 cache.tryGet(item.url, async () => {
                     const response = await got.get(`${item.url}&t=${now}`, {
-                        headers: { Referer: `http://data.guduodata.com/` },
+                        headers: { Referer: `http://guduodata.com/` },
                     });
                     const data = response.data.data;
                     return {
@@ -64,5 +88,5 @@ export default async (ctx) => {
                 })
             )
         ),
-    });
-};
+    };
+}

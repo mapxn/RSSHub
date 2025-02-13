@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { getCurrentPath } from '@/utils/helpers';
 const __dirname = getCurrentPath(import.meta.url);
 
@@ -6,7 +5,7 @@ import cache from '@/utils/cache';
 import got from '@/utils/got';
 import { load } from 'cheerio';
 import { art } from '@/utils/render';
-import * as path from 'node:path';
+import path from 'node:path';
 
 const getApiUrl = async () => {
     const blogRootUrl = 'https://openai.com/blog';
@@ -20,7 +19,7 @@ const getApiUrl = async () => {
     const apiBaseUrl = initResponse.data
         .toString()
         .match(/(?<=TWILL_API_BASE:").+?(?=")/)[0]
-        .replaceAll('\\u002F', '/');
+        .replaceAll(String.raw`\u002F`, '/');
 
     return new URL(apiBaseUrl);
 };
@@ -71,7 +70,4 @@ const parseArticle = (ctx, rootUrl, attributes) =>
         };
     });
 
-module.exports = {
-    getApiUrl,
-    parseArticle,
-};
+export { getApiUrl, parseArticle };

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { getCurrentPath } from '@/utils/helpers';
 const __dirname = getCurrentPath(import.meta.url);
 
@@ -6,7 +5,7 @@ import got from '@/utils/got';
 import { load } from 'cheerio';
 import { parseDate } from '@/utils/parse-date';
 import { art } from '@/utils/render';
-import * as path from 'node:path';
+import path from 'node:path';
 
 const appKey = '61a2f329348b3bf77';
 
@@ -106,9 +105,4 @@ const processItems = async (items, tryGet) => {
     );
 };
 
-module.exports = {
-    rootUrl,
-
-    getData,
-    processItems,
-};
+export { rootUrl, getData, processItems };

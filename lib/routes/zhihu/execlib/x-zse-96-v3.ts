@@ -1,7 +1,8 @@
-// @ts-nocheck
 // Credit:
 // https://blog.csdn.net/zjq592767809/article/details/126512798
 // https://blog.csdn.net/zhoumi_/article/details/126659351
+
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 
 function i(e, t, n) {
     (t[n] = 255 & (e >>> 24)), (t[n + 1] = 255 & (e >>> 16)), (t[n + 2] = 255 & (e >>> 8)), (t[n + 3] = 255 & e);
@@ -123,4 +124,4 @@ const encrypt = (md5Str) => {
     return resultStr;
 };
 
-module.exports = encrypt;
+export default encrypt;

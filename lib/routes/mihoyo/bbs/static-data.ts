@@ -1,4 +1,3 @@
-// @ts-nocheck
 // 排行榜基本数据
 const DATA_MAP = {
     bh2: {
@@ -98,6 +97,13 @@ const DATA_MAP = {
     zzz: {
         title: '绝区零',
         gids: 8,
+        default_forum: 'tongren',
+        forums: {
+            tongren: {
+                title: '同人',
+                forum_id: 59,
+            },
+        },
     },
     dby: {
         title: '大别野',
@@ -132,7 +138,4 @@ const RANKING_TYPE_MAP = {
     },
 };
 
-module.exports = {
-    DATA_MAP,
-    RANKING_TYPE_MAP,
-};
+export { DATA_MAP, RANKING_TYPE_MAP };

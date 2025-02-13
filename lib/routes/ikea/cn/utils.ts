@@ -1,10 +1,9 @@
-// @ts-nocheck
 import { getCurrentPath } from '@/utils/helpers';
 const __dirname = getCurrentPath(import.meta.url);
 
 import { art } from '@/utils/render';
 import md5 from '@/utils/md5';
-import * as path from 'node:path';
+import path from 'node:path';
 
 const generateRequestHeaders = () => {
     const now = Math.round(Date.now() / 1000);
@@ -40,7 +39,4 @@ const generateProductItem = (product) => {
     };
 };
 
-module.exports = {
-    generateRequestHeaders,
-    generateProductItem,
-};
+export { generateRequestHeaders, generateProductItem };

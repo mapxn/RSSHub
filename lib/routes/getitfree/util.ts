@@ -1,4 +1,3 @@
-// @ts-nocheck
 import got from '@/utils/got';
 import { load } from 'cheerio';
 
@@ -235,7 +234,7 @@ const getFilterByKeyAndKeyword = async (key, keyword) => {
 const getFilterKeyForSearchParams = (key, isApi = false) => {
     const keys = isApi ? filterApiKeys : filterKeys;
 
-    return Object.hasOwn(keys, key) ? keys[key] ?? key : undefined;
+    return Object.hasOwn(keys, key) ? (keys[key] ?? key) : undefined;
 };
 
 /**
@@ -313,15 +312,4 @@ const parseFilterStr = (filterStr) => {
     return parseStr(filterStr, {});
 };
 
-module.exports = {
-    apiSlug,
-    rootUrl,
-
-    bakeFilterSearchParams,
-    bakeFiltersWithPair,
-    bakeUrl,
-    fetchData,
-    getFilterNameForTitle,
-    getFilterParamsForUrl,
-    parseFilterStr,
-};
+export { apiSlug, rootUrl, bakeFilterSearchParams, bakeFiltersWithPair, bakeUrl, fetchData, getFilterNameForTitle, getFilterParamsForUrl, parseFilterStr };

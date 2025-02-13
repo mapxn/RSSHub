@@ -1,4 +1,3 @@
-// @ts-nocheck
 import got from '@/utils/got';
 
 const rootUrl = 'https://cbaigui.com';
@@ -9,11 +8,7 @@ const GetFilterId = async (type, name) => {
 
     const { data: filterResponse } = await got(filterApiUrl);
 
-    return filterResponse.filter((f) => f.name === name).pop()?.id ?? undefined;
+    return filterResponse.findLast((f) => f.name === name)?.id ?? undefined;
 };
 
-module.exports = {
-    rootUrl,
-    apiSlug,
-    GetFilterId,
-};
+export { rootUrl, apiSlug, GetFilterId };
